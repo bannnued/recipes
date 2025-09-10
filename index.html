@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick n Delicious</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: #f6f8fa;
+      color: #333;
+      font-family: 'Segoe UI', Verdana, sans-serif;
+      margin: 0;
+    }
+    header {
+      background: #25bdec;
+      color: white;
+      padding: 1rem 0;
+      text-align: center;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 2rem 1.5rem;
+ }
+    .search-section {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.3rem;
+      align-items: center;
+      flex-wrap: wrap;
+}
+    .search-section input, .search-section select {
+      padding: 0.4rem 0.8rem;
+      font-size: 1rem;
+      border: 1px solid #d5dbe2;
+      border-radius: 4px;
+    }
+.search-section button {
+      padding: 0.4rem 1rem;
+      background: #25bdec;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+ .recipe-list {
+      margin-top: 1.2rem;
+    }
+ .recipe-card {
+      background: #fafbfc;
+      border: 1px solid #e2e7ef;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+.recipe-card img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 0.7rem;
+    }
+      .recipe-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+      .recipe-info {
+      font-size: 0.95rem;
+      color: #808496;
+      margin-bottom: 0.6rem;
+    }
+     .recipe-desc {
+      margin-bottom: 0.7rem;
+    }
+ .tag {
+      display: inline-block;
+      background: #e0f0f6;
+      color: #1989aa;
+      font-size: 0.85rem;
+      border-radius: 12px;
+      padding: 0.12rem 0.7rem;
+      margin-right: 0.3rem;
+      margin-bottom: 0.2rem;
+    }
+
+ footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+                .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .social-icons {
+            margin: 1rem 0;
+        }
+                .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #4ecdc4;
+        }
+
+    .recipe-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  .recipe-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .recipe-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    Quick n Delicious
+  </header>
+  <div class="container">
+    <div style="text-align:center; margin-bottom: 1rem;">
+      <strong>Delicious recipes here!!</strong>
+    </div>
+    <div class="search-section">
+      <input type="text" id="search" placeholder="Search recepies...">
+      <select id="meal-type">
+        <option value="">All Meals</option>
+        <option value="breakfast">Breakfast</option>
+        <option value="lunch">Lunch</option>
+        <option value="snack">Snack</option>
+        <option value="dinner">Dinner</option>
+      </select>
+      <select id="cuisine">
+        <option value="">All Cuisines</option>
+        <option value="asian">Asian</option>
+        <option value="american">American</option>
+        <option value="italian">Italian</option>
+        <option value="mexican">Mexican</option>
+      </select>
+      <button id="search-btn">Find</button>
+    </div>
+    <div id="recipes" class="recipe-list">
+      Loading recipes...
+    </div>
+  </div>
+     <footer>
+    <div class="footer-content">
+        <p>Quick n Delicious &copy; 2025</p>
+    <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+     </div>
+        <p>Made with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for food lovers</p>
+    </div>
+    </footer>
+  <script>
+    const recipd = document.getElementById('recipes');
+    const searchi = document.getElementById('search');
+    const searchb = document.getElementById('search-btn');
+    const mealtype = document.getElementById('meal-type');
+    const cusine = document.getElementById('cuisine');
+
+    let allrecipes = [];
+
+    function showrec(recipes) {
+      if (!recipes.length) {
+        recipd.innerHTML = "<div>No recipes found. Please try a new search.</div>";
+        return;
+      }
+      recipd.innerHTML = "";
+      recipes.forEach(r => {
+     const card = document.createElement('div');
+    card.className = 'recipe-card';
+     card.innerHTML = `
+         <img src="${r.image}" alt="${r.name}">
+     <div class="recipe-title">${r.name}</div>
+     <div class="recipe-info">
+            ${r.prepTimeMinutes + r.cookTimeMinutes} mins &nbsp; | &nbsp; ${r.servings} servings
+        </div>
+          <div class="recipe-desc">${r.description || "A simple, delicious option!"}</div>
+      <div>
+            <span class="tag">${r.cuisine}</span>
+        <span class="tag">${Array.isArray(r.mealType) ? r.mealType.join(', ') : r.mealType}</span>
+            <span class="tag">${r.difficulty}</span>
+          </div>
+        `;
+        recipd.appendChild(card);
+      });
+    }
+function filterns() {
+  const sev = searchi.value.trim().toLowerCase();
+  const mev = mealtype.value;
+  const vuv = cusine.value;
+  const filtered = allrecipes.filter(r => {
+    const name = (r.name || "").toLowerCase();
+    const desc = (r.description || "").toLowerCase();
+    const cuisine = (r.cuisine || "").toLowerCase();
+    const rmeal = Array.isArray(r.mealType)
+      ? r.mealType.map(m => (m || "").toLowerCase())
+      : [];
+    const mt = name.includes(sev) || desc.includes(sev);
+    const mm =
+      !mev ||
+      rmeal.some(type => type === mev.toLowerCase());
+    const mc =
+      !vuv || cuisine === vuv.toLowerCase();
+
+    return mt && mm && mc;
+  });
+  showrec(filtered);
+}
+    async function loadrec() {
+      recipd.textContent = "Loading recipes...";
+      try {
+        const res = await fetch('https://dummyjson.com/recipes?limit=24');
+        const data = await res.json();
+        allrecipes = data.recipes || [];
+        showrec(allrecipes);
+      } catch {
+        recipd.textContent = "Could not load recipes. Please check your connection.";
+      }
+    }
+    searchb.onclick = filterns;
+    searchi.onkeyup = e => { if (e.key === "Enter") filterns(); };
+    mealtype.onchange = filterns;
+    cusine.onchange = filterns;
+    loadrec();</script>
+</body>
+</html>
